@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import Board from "./Components/Board.js";
+import Board from "./Components/Board";
 import WinningPage from "./Components/WinningPage";
 
 function App() {
@@ -90,6 +90,7 @@ function App() {
       <Board
         board={board}
         onClick={board_Clicked}
+        onResetClick={restartBtn_Clicked}
         visibility={gameOver ? "hide" : null}
       ></Board>
       <WinningPage
