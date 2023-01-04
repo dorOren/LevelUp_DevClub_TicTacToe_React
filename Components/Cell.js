@@ -1,11 +1,12 @@
 import React from "react";
-import "./Cell.css";
+//import "./Styles/Cell.css";
+import CellElement from "./Styles/CellElement.styled";
 
 function Cell(props) {
   return (
-    <div className={`cell ${props.mark}`} onClick={props.onClick}>
+    <CellElement xTurn={props.mark == "X"} onClick={props.onClick}>
       {props.mark}
-    </div>
+    </CellElement>
   );
 }
 

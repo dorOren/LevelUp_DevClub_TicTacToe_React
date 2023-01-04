@@ -1,16 +1,35 @@
-import React, { useState } from "react";
-import "./App.css";
+import React, { useState, useReducer } from "react";
 import Board from "./Components/Board";
 import WinningPage from "./Components/WinningPage";
+import ScoreContext from "./Store/context-score";
+
+const X_SIGN = "X";
+const O_SIGN = "O";
+
+const scoreReducer = (state, action) => {
+  if (action.type === X_SIGN) {
+    return {
+      playerX_Score: state.playerX_Score + 1,
+      playerO_Score: state.playerO_Score,
+    };
+  } else {
+    return {
+      playerX_Score: state.playerX_Score,
+      playerO_Score: state.playerO_Score + 1,
+    };
+  }
+};
 
 function App() {
-  const X_SIGN = "X";
-  const O_SIGN = "O";
-
   const [board, setBoard] = useState(Array(9).fill(null));
   const [winningText, setWinningText] = useState("");
   const [xTurn, setTurn] = useState(true);
   const [gameOver, setGameStatus] = useState(false);
+
+  const [playersScores, setScore] = useReducer(scoreReducer, {
+    playerX_Score: 0,
+    playerO_Score: 0,
+  });
 
   const WINNING_COMBINATIONS = [
     [0, 1, 2],
@@ -38,7 +57,11 @@ function App() {
     });
     setBoard(updateBoard);
 
-    if (checkWinner(updateBoard)) {
+    const winnerSign = checkWinner(updateBoard);
+    if (winnerSign) {
+      winnerSign == X_SIGN
+        ? setScore({ type: X_SIGN })
+        : setScore({ type: O_SIGN });
       endGame(false);
     } else if (checkDraw(updateBoard)) {
       endGame(true);
@@ -86,19 +109,25 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Board
-        board={board}
-        onClick={board_Clicked}
-        onResetClick={restartBtn_Clicked}
-        visibility={gameOver ? "hide" : null}
-      ></Board>
+    <React.Fragment>
+      <ScoreContext.Provider
+        value={{
+          ScoreContext: playersScores,
+        }}
+      >
+        <Board
+          board={board}
+          onClick={board_Clicked}
+          onResetClick={restartBtn_Clicked}
+          visibility={gameOver ? "hide" : null}
+        ></Board>
+      </ScoreContext.Provider>
       <WinningPage
         winner={winningText}
         restartBoard={restartBtn_Clicked}
-        visibility={gameOver ? null : "hide"}
+        visibility={gameOver}
       ></WinningPage>
-    </div>
+    </React.Fragment>
   );
 }
 export default App;

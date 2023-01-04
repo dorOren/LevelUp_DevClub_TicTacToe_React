@@ -1,12 +1,9 @@
-import React from "react";
-import "./ResetBtn.css";
+import React, { useContext } from "react";
+//import "./Styles/ResetBtn.css";
+import ResetBtnElement from "./Styles/ResetBtnElement.styled";
 
 function ResetBtn(props) {
-  return (
-    <button className="reset-button" onClick={props.onClick}>
-      reset
-    </button>
-  );
+  return <ResetBtnElement onClick={props.onClick}>reset</ResetBtnElement>;
 }
 
 export default ResetBtn;
