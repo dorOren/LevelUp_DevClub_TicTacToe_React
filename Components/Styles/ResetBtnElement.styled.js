@@ -11,7 +11,7 @@ const ResetBtnElement = styled.button`
   grid-column-start: 2;
   cursor: pointer;
 
-  &: hover {
+  & :hover {
     background-color: #2080fdb3;
   }
 `;
